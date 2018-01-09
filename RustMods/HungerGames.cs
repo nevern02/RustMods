@@ -22,6 +22,7 @@ namespace Oxide.Plugins
         private bool registrationOpen = false;
         private List<BasePlayer> tributes;
 
+        [PluginReference] Plugin Spawns;
         [PluginReference] Plugin ZoneManager;
         #endregion
 
@@ -48,10 +49,18 @@ namespace Oxide.Plugins
         #endregion
 
         #region commands
-        [ConsoleCommand("hg.prepare")]
-        void CCommandPrepare(ConsoleSystem.Arg arg)
+        [ChatCommand("hgjoin")]
+        void CommandJoin(BasePlayer player, string command, string[] args)
         {
-            // TODO: Invoke hgprepare chat command
+            if (tributes.Contains(player))
+            {
+                player.IPlayer.Reply("You are already registered for the Hunger Games!");
+                return;
+            }
+
+            tributes.Add(player);
+            player.IPlayer.Reply("You have registered for the Hunger Games!");
+            Puts(player.IPlayer.Name + " has registered for the Hunger Games.");
         }
 
         [ChatCommand("hgprepare")]
@@ -78,20 +87,6 @@ namespace Oxide.Plugins
             // TODO: Global chat message + GUI 
             Puts(player.IPlayer.Name + " has opened registration for Hunger Games.");
             player.IPlayer.Reply("Hunger Games registration opened.");
-        }
-
-        [ChatCommand("hgregister")]
-        void CommandRegister(BasePlayer player, string command, string[] args)
-        {
-            if (tributes.Contains(player))
-            {
-                player.IPlayer.Reply("You are already registered for the Hunger Games!");
-                return;
-            }
-
-            tributes.Add(player);
-            player.IPlayer.Reply("You have registered for the Hunger Games!");
-            Puts(player.IPlayer.Name + " has registered for the Hunger Gamses.");
         }
 
         [ChatCommand("hgzone")]
