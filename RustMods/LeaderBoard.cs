@@ -122,6 +122,11 @@ namespace Oxide.Plugins
 
         void OnPlayerDie(BasePlayer player, HitInfo info)
         {
+            Puts(player.displayName + " was kilt." + " | IPlayer = " + player.IPlayer);
+            if (player.IPlayer != null) {
+              Puts("isConnected = " + player.IPlayer.IsConnected + " | isServer = " + player.IPlayer.IsServer + " | Address = " + player.IPlayer.Address);
+            }
+
             if (player.lastAttacker == null) return; // Can't determine killer
             if (!(player.lastAttacker is BasePlayer)) return;
 
@@ -129,7 +134,10 @@ namespace Oxide.Plugins
             var attacker = player.lastAttacker as BasePlayer;
             if (!(BasePlayer.activePlayerList.Contains(attacker))) return;
 
-            Puts("Registering kill for " + attacker.displayName + " | isConnected = " + player.IPlayer.IsConnected + " | isServer = " + player.IPlayer.IsServer + " | Address = " + player.IPlayer.Address);
+            Puts("Registering kill for " + attacker.displayName);
+            if (attacker.IPlayer != null) {
+              Puts("isConnected = " + attacker.IPlayer.IsConnected + " | isServer = " + attacker.IPlayer.IsServer + " | Address = " + attacker.IPlayer.Address);
+            }
 
             AddKill(player, attacker);
         }
